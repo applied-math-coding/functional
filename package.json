@@ -1,0 +1,32 @@
+{
+  "name": "functional",
+  "version": "1.0.0",
+  "description": "Functional Programming Library",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "eslint lib/*",
+    "test": "ts-node node_modules/jasmine/bin/jasmine --config=jasmine.json"
+  },
+  "keywords": [
+    "functional",
+    "programming",
+    "functor",
+    "category"
+  ],
+  "author": "applied.math.coding",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/jasmine": "^3.5.10",
+    "@typescript-eslint/eslint-plugin": "^2.29.0",
+    "@typescript-eslint/parser": "^2.29.0",
+    "eslint": "^6.8.0",
+    "jasmine": "^3.5.0",
+    "jasmine-ts": "^0.3.0",
+    "ts-node": "^8.8.2",
+    "typedoc": "^0.17.4",
+    "typescript": "^3.8.3"
+  },
+  "dependencies": {}
+}

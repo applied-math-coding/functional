@@ -1,2 +1,4 @@
 # functional
-Library providing functional-programming principles
+Functional programming library
+
+TODO
