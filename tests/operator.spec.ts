@@ -28,4 +28,10 @@ describe('functional operator', () => {
     const o = id();
     expect(o('a')).toBe('a');
   });
+
+  it('should create a partial application', () => {
+    const f = (a: number, b: number, c: number) => a * b + c;
+    const r = op(f).partial(2)(3, 4);
+    expect(r).toBe(10);
+  });
 });

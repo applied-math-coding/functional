@@ -1,13 +1,15 @@
-enum Composer {
+enum OpUtil {
   comp = 'comp',
-  pipe = 'pipe'
+  pipe = 'pipe',
+  partial = 'partial'
 }
 
-type Fn<T, R> = (v: T) => R;
+type Fn<T, R> = (v: T, ...r: T[]) => R;
 
 type FnExt<T, R> = {
-  [Composer.comp]: <S>(g: Fn<S, T>) => Op<S, R>;
-  [Composer.pipe]: <S>(g: Fn<R, S>) => Op<T, S>;
+  [OpUtil.comp]: <S>(g: Fn<S, T>) => Op<S, R>;
+  [OpUtil.pipe]: <S>(g: Fn<R, S>) => Op<T, S>;
+  [OpUtil.partial]: (v: T) => Op<T, R>;
 };
 
 export type Op<T, R> = Fn<T, R> & FnExt<T, R>;
@@ -17,9 +19,10 @@ export type Op<T, R> = Fn<T, R> & FnExt<T, R>;
  * @param f
  */
 export function op<T = any, R = any>(f: Fn<T, R>): Op<T, R> {
-  const res = (v: T) => f(v);
-  res[Composer.comp] = <S>(g: Fn<S, T>) => op((v: S) => f(g(v)));
-  res[Composer.pipe] = <S>(g: Fn<R, S>) => op((v: T) => g(f(v)));
+  const res = (v: T, ...r: T[]) => f(v, ...r);
+  res[OpUtil.comp] = <S>(g: Fn<S, T>) => op((v: S) => f(g(v)));
+  res[OpUtil.pipe] = <S>(g: Fn<R, S>) => op((v: T) => g(f(v)));
+  res[OpUtil.partial] = (v: T) => op((...r: T[]) => f(v, ...r));
   return res as Op<T, R>;
 }
 
@@ -38,5 +41,4 @@ export function id<S = any>(): Op<S, S> {
   return op((v: S) => v);
 }
 
-// partial, curry, memoize, object-equality (with custom EQ) goes into value.ts
 
