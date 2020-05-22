@@ -1,0 +1,48 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/tests/dev.spec.ts",
+      "preLaunchTask": "tsc: build - tsconfig.json",
+      "outFiles": [
+        "${workspaceFolder}/dist/**/*.js"
+      ],
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    // {
+    //   "type": "node",
+    //   "request": "launch",
+    //   "name": "Jasmine Current File",
+    //   "program": "${workspaceFolder}/node_modules/jasmine/bin/jasmine",
+    //   "args": [
+    //     "${workspaceFolder}/dist/tests/${fileBasenameNoExtension}.js"
+    //   ],
+      // "preLaunchTask": "tsc: build - tsconfig.json",
+      // "outFiles": [
+      //   "${workspaceFolder}/dist/**/*.js"
+      // ],
+      // "console": "integratedTerminal",
+      // "internalConsoleOptions": "neverOpen"
+    // },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Jasmine-ts Current File",
+      "program": "${workspaceFolder}/node_modules/jasmine-ts/lib/index",
+      "args": [
+        "--config=jasmine.json",
+        "${file}"
+      ],
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

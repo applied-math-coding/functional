@@ -34,4 +34,42 @@ describe('functional operator', () => {
     const r = op(f).partial(2)(3, 4);
     expect(r).toBe(10);
   });
+
+  it('should memoize given function', () => {
+    let hits = 0;
+    const f = (a: number, b: number, c: number) => {
+      hits = hits + 1;
+      return a * b + c;
+    }
+    const f_mem = op(f).mem();
+    f_mem(1, 2, 3);
+    f_mem(1, 2, 3);
+    expect(hits).toBe(1);
+  });
+
+  it('should memoize given function', () => {
+    let hits = 0;
+    const f = (a: number) => {
+      hits = hits + 1;
+      return a;
+    }
+    const f_mem = op(f).mem();
+    f_mem(1);
+    f_mem(1);
+    expect(hits).toBe(1);
+  });
+
+  it('should memoize given function', () => {
+    let hits = 0;
+    const f = (a: number, b: object): number => {
+      hits = hits + 1;
+      return a;
+    }
+    const f_mem = op<any, number>(f).mem();
+    const b = {};
+    f_mem(1, b);
+    f_mem(1, b);
+    f_mem(1, {});
+    expect(hits).toBe(2);
+  });
 });
