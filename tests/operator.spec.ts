@@ -29,9 +29,21 @@ describe('functional operator', () => {
     expect(o('a')).toBe('a');
   });
 
-  it('should create a partial application', () => {
+  it('should create a partial application a=>(b,c)=>f(a,b,c)', () => {
     const f = (a: number, b: number, c: number) => a * b + c;
     const r = op(f).partial(2)(3, 4);
+    expect(r).toBe(10);
+  });
+
+  it('should create a partial application (a,b)=>c=>f(a,b,c)', () => {
+    const f = (a: number, b: number, c: number) => a * b + c;
+    const r = op(f).partial(2, 3)(4);
+    expect(r).toBe(10);
+  });
+
+  it('should create a partial application a=>b=>c=>f(a,b,c)', () => {
+    const f = (a: number, b: number, c: number) => a * b + c;
+    const r = op(f).partial(2).partial(3).partial(4)();
     expect(r).toBe(10);
   });
 

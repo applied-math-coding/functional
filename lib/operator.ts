@@ -5,12 +5,12 @@ enum OpUtil {
   mem = 'mem'
 }
 
-type Fn<T, R> = (v: T, ...r: T[]) => R;
+type Fn<T, R> = (v?: T, ...r: T[]) => R;
 
 type FnExt<T, R> = {
   [OpUtil.comp]: <S>(g: Fn<S, T>) => Op<S, R>;
   [OpUtil.pipe]: <S>(g: Fn<R, S>) => Op<T, S>;
-  [OpUtil.partial]: (v: T) => Op<T, R>;
+  [OpUtil.partial]: (...v: T[]) => Op<T, R>;
   [OpUtil.mem]: () => Op<T, R>;
 };
 
@@ -24,7 +24,7 @@ export function op<T = any, R = any>(f: Fn<T, R>): Op<T, R> {
   const res = (v: T, ...r: T[]) => f(v, ...r);
   res[OpUtil.comp] = <S>(g: Fn<S, T>) => op((v: S) => f(g(v)));
   res[OpUtil.pipe] = <S>(g: Fn<R, S>) => op((v: T) => g(f(v)));
-  res[OpUtil.partial] = (v: T) => op((...r: T[]) => f(v, ...r));  //TODO try to allow for ...v:T[]
+  res[OpUtil.partial] = (...v: T[]) => op((...r: T[]) => (f as (...s: T[]) => R)(...v, ...r));
   res[OpUtil.mem] = () => op(memoize(f));
   return res as Op<T, R>;
 }
