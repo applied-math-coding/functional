@@ -1,6 +1,6 @@
 {
-  "name": "functional",
-  "version": "1.0.0",
+  "name": "@applied.math.coding/functional",
+  "version": "1.0.2",
   "description": "Functional Programming Library",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
@@ -11,12 +11,16 @@
   },
   "keywords": [
     "functional",
-    "programming",
-    "functor",
-    "category"
+    "composition",
+    "partial",
+    "curry",
+    "placeholder",
+    "memoize",
+    "memoise",
+    "operator"
   ],
   "author": "applied.math.coding",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/jasmine": "^3.5.10",
     "@typescript-eslint/eslint-plugin": "^2.29.0",

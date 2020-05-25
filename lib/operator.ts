@@ -10,11 +10,14 @@ type Fn<T, R> = (v?: T, ...r: T[]) => R;
 type FnExt<T, R> = {
   [OpUtil.comp]: <S>(g: Fn<S, T>) => Op<S, R>;
   [OpUtil.pipe]: <S>(g: Fn<R, S>) => Op<T, S>;
-  [OpUtil.partial]: (...v: T[]) => Op<T, R>;
+  [OpUtil.partial]: (...v: (T | _)[]) => Op<T, R>;
   [OpUtil.mem]: () => Op<T, R>;
 };
 
 export type Op<T, R> = Fn<T, R> & FnExt<T, R>;
+
+export type _ = '_';
+export const _ = '_' as _;
 
 /**
  * Makes functional operations available on given function.
@@ -24,9 +27,28 @@ export function op<T = any, R = any>(f: Fn<T, R>): Op<T, R> {
   const res = (v: T, ...r: T[]) => f(v, ...r);
   res[OpUtil.comp] = <S>(g: Fn<S, T>) => op((v: S) => f(g(v)));
   res[OpUtil.pipe] = <S>(g: Fn<R, S>) => op((v: T) => g(f(v)));
-  res[OpUtil.partial] = (...v: T[]) => op((...r: T[]) => (f as (...s: T[]) => R)(...v, ...r));
+  res[OpUtil.partial] = (...v: (T | _)[]) => op((...r: T[]) =>
+    (f as (...s: T[]) => R)(...combinePartialParams(v, r)));
   res[OpUtil.mem] = () => op(memoize(f));
   return res as Op<T, R>;
+}
+
+function combinePartialParams<T>(v: (T | _)[], r: T[]): T[] {
+  if (v.includes('_')) {
+    return fillParamPlaceholders(v, r);
+  } else {
+    return [...v, ...r] as T[];
+  }
+}
+
+function fillParamPlaceholders<T>(v: (T | _)[], r: T[]): T[] {
+  r = [...r];
+  for (let [idx, value] of Object.entries(v)) {
+    if (value === '_') {
+      v[+idx] = r.shift();
+    }
+  }
+  return v as T[];
 }
 
 type Memoize<R, T> = Map<R, Memoize<R, T> | T>;

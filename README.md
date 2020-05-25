@@ -1,47 +1,86 @@
-# functional
-Functional programming library
+# Basic Functional Programming Library
 
-This is a small but useful library which provides basic function programming
-concepts.
-It is written in Typescript and can run in Browser as well as Node.js.
+This library intends to gather some useful pieces of functional programming concepts.
+It does not aim to be comprehensive but rather tries to put together some common and
+often used patterns which can be supplied as very small dependency to your project.
 
-Installation:
-....
+## Environment
 
-Currently supported are:
-- partial application
-- memoizing
+Runs in modern Browsers and Node.js.
+Includes all type declarations for being used in Typescript.
+
+## Installing
+
+npm install @applied.math.coding/functional
+
+or
+
+yarn add @applied.math.coding/functional
+
+## Getting Started
+
+Add
+@import {op} from '@applied.math.coding/functional'
+to your project.
+
+## Features
+
+Supports:
 - composition
 - piping
-- constant-op
-- identity-op
+- partial application
+- memoizing
+- identity-operator
+- constant-operator
 
-Usage:
-  Based on functions f,g,h with any number of parameters,
-    a partial-application:
-      op(f).partial(a)(b,c)
-      op(f).partial(a).partial(b)(c)
-      op(f).partial(a,b)(c)
-      op(f).partial(a).partial(b).partial(c)()
+## Examples and Usages
 
-    a memoized version:
-      let g = op(f).mem()
-      g(a,b,c), g(a,b,c)
+### Creation
+To supply any given function f with functional-features, do
+op(f)
 
-    a composition of functions:
-      op(f).comp(g).comp(h)(a)
-      is equivalent to f(g(g(a)))
+### Identiy-Operator
+To create an operator which serves as identity, do
+id()
 
-    a piped-composition of functions:
-      op(f).pipe(g).pipe(h)(a)
-      is equivalent to h(g(f(a)))
+### Constant-Operator
+To create an operator which returns a constant value, do
+cons(a)
 
-    a constant operator:
-      cons(a)
+### Composition
+Any number of function can be composed by,
+op(f1).comp(f2).comp(f3)(a)
+This is equivalent to f1(f2(f3(a)))
 
-    an identity operator:
-      id()
+### Piping
+You can chain together any number of functions by,
+op(f1).pipe(f2).pipe(f3)(a)
+This is equivalent to f3(f2(f1(a)))
+Or make it more readable by using a constant-operator upfront,
+cons(a).pipe(f1).pipe(f2).pipe(f3)()
 
-    cons(a).pipe(f).pipe(g)()
-      is equivalent to g(f(a))
-//TODO
+### Memoizing
+You can create a memoized version of a function f by,
+const g = op(f).mem();
+Any calls to g will be served from memory if available.
+Note, this works for functions with any number of arguments.
+
+### Partial Application
+You can create from a given function f(a,b,c) with any number of parameters a
+partial-application by,
+op(f).partial(a)(b,c)
+op(f).partial(a, b)(c)
+op(f).partial(a).partial(b).partial(c)()
+op(f).partial(_, b, _)(a,c)
+Note, the '_' serves as a placeholder.
+
+## Author
+
+* **math.coding**
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+
+
+
