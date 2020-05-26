@@ -11,12 +11,28 @@ describe('functional operator', () => {
     expect(r).toBe(13);
   });
 
+  it('should compose functions with different types', () => {
+    const add_1 = (a: number): number => a + 1;
+    const to_strg = (a: number): string => `${a}`;
+    const concate_strg = (a: string): string => a + 'hh';
+    const r = op(concate_strg).comp(to_strg).comp(add_1)(2);
+    expect(r).toBe('3hh');
+  });
+
   it('should pipe functions', () => {
     const add_1 = (a: number): number => a + 1;
     const mult_2 = (a: number): number => a * 2;
     const add_3 = (a: number): number => a + 3;
     const r = op(add_3).pipe(mult_2).pipe(add_1)(3);
     expect(r).toBe(13);
+  });
+
+  it('should pipe functions with different types', () => {
+    const add_1 = (a: number): number => a + 1;
+    const to_strg = (a: number): string => `${a}`;
+    const concate_strg = (a: string): string => a + 'hh';
+    const r = cons(2).pipe(add_1).pipe(to_strg).pipe(concate_strg)();
+    expect(r).toBe('3hh');
   });
 
   it('should create a constant operator', () => {
@@ -35,6 +51,12 @@ describe('functional operator', () => {
     expect(r).toBe(10);
   });
 
+  it('should create a partial application a=>(b,c)=>f(a,b,c)', () => {
+    const f = (a: number, b: number, c: string) => a * b + c;
+    const r = op(f).partial(2)(3, '');
+    expect(r).toBe('6');
+  });
+
   it('should create a partial application (a,b)=>c=>f(a,b,c)', () => {
     const f = (a: number, b: number, c: number) => a * b + c;
     const r = op(f).partial(2, 3)(4);
@@ -49,7 +71,7 @@ describe('functional operator', () => {
 
   it('should create a partial application b=>(a,c)=>f(a,b,c)', () => {
     const f = (a: number, b: number, c: number) => a * b + c;
-    const r = op(f).partial(_, 3, _)(2,4);
+    const r = op(f).partial(_, 3, _)(2, 4);
     expect(r).toBe(10);
   });
 
