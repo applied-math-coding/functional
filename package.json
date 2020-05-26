@@ -1,6 +1,6 @@
 {
   "name": "@applied.math.coding/functional",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Functional Programming Library",
   "main": "dist/lib/index.js",
   "types": "dist/lib/index.d.ts",
@@ -19,7 +19,11 @@
     "memoise",
     "operator"
   ],
-  "author": "applied.math.coding",
+  "author": "applied.math.coding@gmail.com (https://github.com/applied-math-coding)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/applied-math-coding/functional"
+  },
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/jasmine": "^3.5.10",
